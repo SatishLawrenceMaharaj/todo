@@ -13,7 +13,11 @@ async function toggleTodo(id: string, complete: boolean) {
   await prisma.toDo.update({ where: { id }, data: { complete } })
 
   if (complete) {
-    deleteTodo(id); // Schedule the deletion after 10 seconds
+    // Schedule the deletion after 7 days
+    setTimeout(() => {
+      deleteTodo(id);
+
+    }, 604800000); // 7 days in milliseconds
   }
 }
 
@@ -21,8 +25,8 @@ async function deleteTodo(id: string) {
   await prisma.toDo.delete({
     where: { id },
   });
-}
 
+}
 
 export default async function Home() {
   const todos = await getToDo()
